@@ -16,6 +16,10 @@ if ($_GET) {
 }
 ?>
 
+<div class="">
+    <h1 class="text-center">Todos los usuarios registrados</h1>
+</div>
+
 <table class="table table-striped table-hover">
     <tr>
         <td>#</td>
