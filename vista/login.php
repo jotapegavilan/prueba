@@ -17,15 +17,15 @@ require_once("layouts/header.php");
         </div>
         <div class="d-grid gap-2 col-6 mx-auto my-5">
             <button type="submit" class="btn btn-warning" name="btn">Iniciar sesión <i class="fas fa-sign-in-alt"></i></button>
-        </div>        
-        <input type="hidden" name="m" value="logear">     
+        </div>
+        <input type="hidden" name="m" value="logear">
         <div class="col-6 mx-auto my-5">
-            <span class="text-warning fs-6 fw-light">¿No estás registrado?</span> 
+            <span class="text-warning fs-6 fw-light">¿No estás registrado?</span>
         </div>
         <div class="d-grid gap-2 col-6 mx-auto ">
             <a href="index.php?m=nuevo" class="btn btn-warning" name="btn">Registrate <i class="fas fa-user-plus"></i></a>
-            
-        </div>  
+
+        </div>
     </form>
 </div>
 
