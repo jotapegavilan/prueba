@@ -60,17 +60,17 @@ class modeloController
             isset($_REQUEST['nombre']) && isset($_REQUEST['apellido']) && isset($_REQUEST['email'])
             && isset($_REQUEST['nacimiento']) && isset($_REQUEST['clave'])
         ) {
-            $campos = "&nombre=".$_REQUEST['nombre']."&apellido=".$_REQUEST['apellido']."&email=".$_REQUEST['email'].
-            "&nacimiento=".$_REQUEST['nacimiento'];
-            if (strlen($_REQUEST['nombre']) < 3) {                
-                header("location:" . urlsite . "?m=nuevo&error=nombre".$campos);
+            $campos = "&nombre=" . $_REQUEST['nombre'] . "&apellido=" . $_REQUEST['apellido'] . "&email=" . $_REQUEST['email'] .
+                "&nacimiento=" . $_REQUEST['nacimiento'];
+            if (strlen($_REQUEST['nombre']) < 3) {
+                header("location:" . urlsite . "?m=nuevo&error=nombre" . $campos);
             } else if (strlen($_REQUEST['apellido']) < 4) {
-                header("location:" . urlsite . "?m=nuevo&error=apellido".$campos);
+                header("location:" . urlsite . "?m=nuevo&error=apellido" . $campos);
             } else if (strlen($_REQUEST['email']) < 6) {
-                header("location:" . urlsite . "?m=nuevo&error=email".$campos);
+                header("location:" . urlsite . "?m=nuevo&error=email" . $campos);
             } else if (strlen($_REQUEST['nacimiento']) < 10) {
-                header("location:" . urlsite . "?m=nuevo&error=nacimiento".$campos);
-            } else if (strlen($_REQUEST['clave']) < 6) {                
+                header("location:" . urlsite . "?m=nuevo&error=nacimiento" . $campos);
+            } else if (strlen($_REQUEST['clave']) < 6) {
                 header("location:" . urlsite . "?m=nuevo&error=clave");
             } else {
                 $nombre = $_REQUEST['nombre'];
@@ -83,14 +83,12 @@ class modeloController
                 $data = "'$nombre','$apellido','$email','$nacimiento','$encriptada'";
                 $modelo = new Modelo();
                 $dato = $modelo->insertar("usuarios", $data);
-                if($dato->error == 1062){
-                    
+                if ($dato->error == 1062) {
+
                     header("location:" . urlsite . "?m=nuevo&error=duplicado");
-                }else{
+                } else {
                     header("location:" . urlsite . "?action=created");
                 }
-                
-                
             }
         }
     }
@@ -106,42 +104,40 @@ class modeloController
     static function actualizar()
     {
         if (
-            isset( $_REQUEST['id']) &&
+            isset($_REQUEST['id']) &&
             isset($_REQUEST['nombre']) && isset($_REQUEST['apellido']) && isset($_REQUEST['email'])
             && isset($_REQUEST['nacimiento']) && isset($_REQUEST['clave'])
         ) {
-            $campos = "&id=".$_REQUEST['id']."&nombre=".$_REQUEST['nombre']."&apellido=".$_REQUEST['apellido']."&email=".$_REQUEST['email'].
-            "&nacimiento=".$_REQUEST['nacimiento'];
-            if (strlen($_REQUEST['nombre']) < 3) {                
-                header("location:" . urlsite . "?m=editar&error=nombre".$campos);
+            $campos = "&id=" . $_REQUEST['id'] . "&nombre=" . $_REQUEST['nombre'] . "&apellido=" . $_REQUEST['apellido'] . "&email=" . $_REQUEST['email'] .
+                "&nacimiento=" . $_REQUEST['nacimiento'];
+            if (strlen($_REQUEST['nombre']) < 3) {
+                header("location:" . urlsite . "?m=editar&error=nombre" . $campos);
             } else if (strlen($_REQUEST['apellido']) < 4) {
-                header("location:" . urlsite . "?m=editar&error=apellido".$campos);
+                header("location:" . urlsite . "?m=editar&error=apellido" . $campos);
             } else if (strlen($_REQUEST['email']) < 6) {
-                header("location:" . urlsite . "?m=editar&error=email".$campos);
+                header("location:" . urlsite . "?m=editar&error=email" . $campos);
             } else if (strlen($_REQUEST['nacimiento']) < 10) {
-                header("location:" . urlsite . "?m=editar&error=nacimiento".$campos);
-            } else if (strlen($_REQUEST['clave']) < 6) {                
-                header("location:" . urlsite . "?m=editar&error=clave".$campos);
+                header("location:" . urlsite . "?m=editar&error=nacimiento" . $campos);
+            } else if (strlen($_REQUEST['clave']) < 6) {
+                header("location:" . urlsite . "?m=editar&error=clave" . $campos);
             } else {
-        $id = $_REQUEST['id'];
-        $nombre = $_REQUEST['nombre'];
-        $apellido = $_REQUEST['apellido'];
-        $email = $_REQUEST['email'];
-        $nacimiento = $_REQUEST['nacimiento'];
-        $clave = $_REQUEST['clave'];
-        $data = "nombre='$nombre',apellido='$apellido',email='$email',nacimiento='$nacimiento'";
-        if (strlen($clave) >= 6) {
-            $encriptada = Password::hash($clave);
-            $data = $data . ",clave='$encriptada'";
+                $id = $_REQUEST['id'];
+                $nombre = $_REQUEST['nombre'];
+                $apellido = $_REQUEST['apellido'];
+                $email = $_REQUEST['email'];
+                $nacimiento = $_REQUEST['nacimiento'];
+                $clave = $_REQUEST['clave'];
+                $data = "nombre='$nombre',apellido='$apellido',email='$email',nacimiento='$nacimiento'";
+                if (strlen($clave) >= 6) {
+                    $encriptada = Password::hash($clave);
+                    $data = $data . ",clave='$encriptada'";
+                }
+
+                $model = new Modelo();
+                $dato = $model->actualizar("usuarios", $data, "id=" . $id);
+                header("location:" . urlsite . "?action=updated");
+            }
         }
-
-        $model = new Modelo();
-        $dato = $model->actualizar("usuarios", $data, "id=" . $id);
-        header("location:" . urlsite . "?action=updated");
-    }}
-
-
-        
     }
 
 

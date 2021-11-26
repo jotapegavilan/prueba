@@ -4,40 +4,40 @@ $nombre = "";
 $apellido = "";
 $email = "";
 $nacimiento = "";
-if($_GET){
-    if(isset($_GET["error"])){
-        ?>
+if ($_GET) {
+    if (isset($_GET["error"])) {
+?>
         <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-            <use xlink:href="#check-circle-fill" />
-        </svg>
-        <div>
-            <?php
-                if($_GET["error"]== "duplicado"){
-                    ?>
-                        Error el email ingresado ya está en nuestros registros
-                    <?php
-                }else{
-            ?>
-            Error : <?=$_GET["error"] ?> no cumple con el mínimo de caracteres.
-            <?php
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                <use xlink:href="#check-circle-fill" />
+            </svg>
+            <div>
+                <?php
+                if ($_GET["error"] == "duplicado") {
+                ?>
+                    Error el email ingresado ya está en nuestros registros
+                <?php
+                } else {
+                ?>
+                    Error : <?= $_GET["error"] ?> no cumple con el mínimo de caracteres.
+                <?php
                 }
-            ?>
+                ?>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <?php
+<?php
     }
-    if(isset($_GET["nombre"])){
+    if (isset($_GET["nombre"])) {
         $nombre = $_GET["nombre"];
     }
-    if(isset($_GET["apellido"])){
+    if (isset($_GET["apellido"])) {
         $apellido = $_GET["apellido"];
     }
-    if(isset($_GET["email"])){
+    if (isset($_GET["email"])) {
         $email = $_GET["email"];
     }
-    if(isset($_GET["nacimiento"])){
+    if (isset($_GET["nacimiento"])) {
         $nacimiento = $_GET["nacimiento"];
     }
 }
@@ -59,7 +59,7 @@ if($_GET){
         </div>
         <div class="input-group my-4">
             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-alt"></i></span>
-            <input class="form-control" value="<?= $nacimiento ?>" id="txtNacimiento" type="date"  name="nacimiento" aria-label="nacimiento" aria-describedby="basic-addon1">
+            <input class="form-control" value="<?= $nacimiento ?>" id="txtNacimiento" type="date" name="nacimiento" aria-label="nacimiento" aria-describedby="basic-addon1">
         </div>
         <div class="input-group my-4">
             <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>

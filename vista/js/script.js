@@ -33,10 +33,25 @@ function swalError(error) {
   });
 }
 
+function login(event) {
+  let txtEmail = document.getElementById("txtEmail");
+  let emailLength = txtEmail.value.length;
+  let txtClave = document.getElementById("txtClave");
+  let clavelLength = txtClave.value.length;
+  if (emailLength < 6) {
+    event.preventDefault();
+    txtEmail.focus();
+    swalError("El email es demaciado corto");
+  } else if (clavelLength < 6) {
+    txtClave.focus();
+    event.preventDefault();
+    swalError("La clave es demaciada corta");
+  }
+}
 
 function verificarEmail() {
   $.ajax({
-    async:false,
+    async: false,
     url: "index.php",
     dataType: "json",
     method: "GET",
@@ -47,11 +62,10 @@ function verificarEmail() {
     error: function (error) {
       console.log(error);
     },
-    success: function (data) {      
-      
+    success: function (data) {
       if (data.status == "ocupado") {
-        e.preventDefault();        
-        swalError("El email está ocupado");        
+        e.preventDefault();
+        swalError("El email está ocupado");
       }
     },
   });
@@ -60,40 +74,46 @@ function verificarEmail() {
 function validarForm(event, tipo) {
   let mod = true;
   e = event;
-  if (tipo == "new") {   
+  if (tipo == "new") {
     verificarEmail();
     mod = false;
   }
 
-  let txtNombre = document.getElementById("txtNombre").value;
-  let nombreLength = txtNombre.length;
-  let txtApellido = document.getElementById("txtApellido").value;
-  let apellidoLength = txtApellido.length;
-  let txtEmail = document.getElementById("txtEmail").value;
-  let emailLength = txtEmail.length;
-  let txtNacimiento = document.getElementById("txtNacimiento").value;
-  let nacimientoLength = txtNacimiento.length;
-  let txtClave = document.getElementById("txtClave").value;
-  let claveLength = txtClave.length;
-  let txtClave1 = document.getElementById("txtClave1").value;
-  let clave1Length = txtClave1.length;
+  let txtNombre = document.getElementById("txtNombre");
+  let nombreLength = txtNombre.value.length;
+  let txtApellido = document.getElementById("txtApellido");
+  let apellidoLength = txtApellido.value.length;
+  let txtEmail = document.getElementById("txtEmail");
+  let emailLength = txtEmail.value.length;
+  let txtNacimiento = document.getElementById("txtNacimiento");
+  let nacimientoLength = txtNacimiento.value.length;
+  let txtClave = document.getElementById("txtClave");
+  let claveLength = txtClave.value.length;
+  let txtClave1 = document.getElementById("txtClave1");
+  let clave1Length = txtClave1.value.length;
 
   if (nombreLength < 3) {
+    txtNombre.focus();
     event.preventDefault();
     swalError("El nombre es demaciado corto");
   } else if (apellidoLength < 3) {
+    txtApellido.focus();
     event.preventDefault();
     swalError("El apellido es demaciado corto");
   } else if (emailLength < 6) {
+    txtEmail.focus();
     event.preventDefault();
     swalError("El email es demaciado corto");
   } else if (nacimientoLength == 0) {
+    txtNacimiento.focus();
     event.preventDefault();
     swalError("Ingrese fecha de nacimiento");
   } else if (claveLength > 0 && claveLength < 6 && mod) {
+    txtClave.focus();
     event.preventDefault();
     swalError("La contraseña debe tener un mínimo de 6 caracteres.");
   } else if (claveLength < 6 && !mod) {
+    txtClave.focus();
     event.preventDefault();
     swalError("La contraseña debe tener un mínimo de 6 caracteres.");
   } else if (txtClave !== txtClave1 && !mod) {
