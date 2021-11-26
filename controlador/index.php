@@ -13,14 +13,16 @@ class modeloController
     {
         $modelo   = new Modelo();
         $resp = new stdClass();
-        if ($modelo->verifyEmail($_REQUEST['email']) > 0) {
-            $resp->status = 'ocupado';
-        } else {
-            $resp->status = 'libre';
+        if (isset($_REQUEST['email'])) {
+            if ($modelo->verifyEmail($_REQUEST['email']) > 0) {
+                $resp->status = 'ocupado';
+            } else {
+                $resp->status = 'libre';
+            }
+            echo json_encode($resp);
         }
-        echo json_encode($resp);
     }
-    
+
     static function index()
     {
         $modelo   = new Modelo();
@@ -35,31 +37,62 @@ class modeloController
 
     static function logear()
     {
-        $email = $_REQUEST['email'];
-        $clave = $_REQUEST['clave'];
-        $modelo = new Modelo();
-        $dato = $modelo->logear($email, $clave);
-        require_once("vista/home.php");
+        if (isset($_REQUEST['email']) && isset($_REQUEST['clave'])) {
+            if (strlen($_REQUEST['email']) < 6 || strlen($_REQUEST['clave']) < 6) {
+                header("location:" . urlsite . "?m=login&error=yes");
+            }
+            $email = $_REQUEST['email'];
+            $clave = $_REQUEST['clave'];
+            $modelo = new Modelo();
+            $dato = $modelo->logear($email, $clave);
+            require_once("vista/home.php");
+        }
     }
-    
+
     static function nuevo()
     {
         require_once("vista/nuevo.php");
     }
-    
+
     static function guardar()
     {
-        $nombre = $_REQUEST['nombre'];
-        $apellido = $_REQUEST['apellido'];
-        $email = $_REQUEST['email'];
-        $nacimiento = $_REQUEST['nacimiento'];
-        var_dump($nacimiento);
-        $clave = $_REQUEST['clave'];
-        $encriptada = Password::hash($clave);
-        $data = "'$nombre','$apellido','$email','$nacimiento','$encriptada'";              
-        $modelo = new Modelo();
-        $dato = $modelo->insertar("usuarios", $data);
-        header("location:" . urlsite . "?action=created");
+        if (
+            isset($_REQUEST['nombre']) && isset($_REQUEST['apellido']) && isset($_REQUEST['email'])
+            && isset($_REQUEST['nacimiento']) && isset($_REQUEST['clave'])
+        ) {
+            $campos = "&nombre=".$_REQUEST['nombre']."&apellido=".$_REQUEST['apellido']."&email=".$_REQUEST['email'].
+            "&nacimiento=".$_REQUEST['nacimiento'];
+            if (strlen($_REQUEST['nombre']) < 3) {                
+                header("location:" . urlsite . "?m=nuevo&error=nombre".$campos);
+            } else if (strlen($_REQUEST['apellido']) < 4) {
+                header("location:" . urlsite . "?m=nuevo&error=apellido".$campos);
+            } else if (strlen($_REQUEST['email']) < 6) {
+                header("location:" . urlsite . "?m=nuevo&error=email".$campos);
+            } else if (strlen($_REQUEST['nacimiento']) < 10) {
+                header("location:" . urlsite . "?m=nuevo&error=nacimiento".$campos);
+            } else if (strlen($_REQUEST['clave']) < 6) {                
+                header("location:" . urlsite . "?m=nuevo&error=clave");
+            } else {
+                $nombre = $_REQUEST['nombre'];
+                $apellido = $_REQUEST['apellido'];
+                $email = $_REQUEST['email'];
+                $nacimiento = $_REQUEST['nacimiento'];
+                var_dump($nacimiento);
+                $clave = $_REQUEST['clave'];
+                $encriptada = Password::hash($clave);
+                $data = "'$nombre','$apellido','$email','$nacimiento','$encriptada'";
+                $modelo = new Modelo();
+                $dato = $modelo->insertar("usuarios", $data);
+                if($dato->error == 1062){
+                    
+                    header("location:" . urlsite . "?m=nuevo&error=duplicado");
+                }else{
+                    header("location:" . urlsite . "?action=created");
+                }
+                
+                
+            }
+        }
     }
 
     static function editar()
@@ -69,9 +102,27 @@ class modeloController
         $dato = $producto->mostrar("usuarios", "id=" . $id);
         require_once("vista/editar.php");
     }
-    
+
     static function actualizar()
     {
+        if (
+            isset( $_REQUEST['id']) &&
+            isset($_REQUEST['nombre']) && isset($_REQUEST['apellido']) && isset($_REQUEST['email'])
+            && isset($_REQUEST['nacimiento']) && isset($_REQUEST['clave'])
+        ) {
+            $campos = "&id=".$_REQUEST['id']."&nombre=".$_REQUEST['nombre']."&apellido=".$_REQUEST['apellido']."&email=".$_REQUEST['email'].
+            "&nacimiento=".$_REQUEST['nacimiento'];
+            if (strlen($_REQUEST['nombre']) < 3) {                
+                header("location:" . urlsite . "?m=editar&error=nombre".$campos);
+            } else if (strlen($_REQUEST['apellido']) < 4) {
+                header("location:" . urlsite . "?m=editar&error=apellido".$campos);
+            } else if (strlen($_REQUEST['email']) < 6) {
+                header("location:" . urlsite . "?m=editar&error=email".$campos);
+            } else if (strlen($_REQUEST['nacimiento']) < 10) {
+                header("location:" . urlsite . "?m=editar&error=nacimiento".$campos);
+            } else if (strlen($_REQUEST['clave']) < 6) {                
+                header("location:" . urlsite . "?m=editar&error=clave".$campos);
+            } else {
         $id = $_REQUEST['id'];
         $nombre = $_REQUEST['nombre'];
         $apellido = $_REQUEST['apellido'];
@@ -84,10 +135,13 @@ class modeloController
             $data = $data . ",clave='$encriptada'";
         }
 
-
         $model = new Modelo();
         $dato = $model->actualizar("usuarios", $data, "id=" . $id);
         header("location:" . urlsite . "?action=updated");
+    }}
+
+
+        
     }
 
 

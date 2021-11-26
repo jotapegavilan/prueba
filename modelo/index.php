@@ -12,13 +12,18 @@ class Modelo
     }
     public function insertar($tabla, $data)
     {
+        $respuesta = new stdClass(); 
+        $respuesta->error = 0;      
         $consulta = "insert into " . $tabla . " values(null," . $data . ")";        
         $resultado = $this->db->query($consulta);  
-        if ($resultado) {
-            return true;
-        } else {
-            return false;
+        if($resultado==false){
+            if($this->db->errorInfo()[1] == 1062){
+                $respuesta->error = 1062; 
+                
+            }
         }
+       
+        return $respuesta;
     }
     public function verifyEmail($email)
     {

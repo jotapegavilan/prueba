@@ -1,9 +1,25 @@
 <?php
 require_once("layouts/header.php");
+if($_GET){
+    if(isset($_GET["error"])){
+        ?>
+        <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
+        <div>           
+            Error : <?=$_GET["error"] ?> no cumple con el mínimo de caracteres.            
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php
+    }   
+}
 ?>
+
 <div class="row justify-content-center bg-dark">
     <h1 class="text-center text-white">Editar</h1>
-    <form action="" method="get" class="form col-6" onsubmit="validarForm(event,'mod')">
+    <form action="" method="post" class="form col-6" onsubmit="validarForm(event,'mod')">
         <?php
         foreach ($dato as $key => $value) :
             foreach ($value as $v) :
